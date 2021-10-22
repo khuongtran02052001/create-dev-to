@@ -4,6 +4,7 @@
 import React from 'react';
 
 import axios from 'axios';
+import { useRouter } from 'next/router';
 import { Helmet } from 'react-helmet';
 import { useForm } from 'react-hook-form';
 
@@ -11,7 +12,7 @@ import { apiUrl } from 'src/Context/contant';
 // import { User } from 'src/Context/AuthContext';
 export default function index() {
   const [file, setFile] = React.useState<File[]>([]);
-
+  const router = useRouter();
   type Inputs = {
     title: string;
   };
@@ -34,6 +35,7 @@ export default function index() {
     if (!res) return alert(`create post fail`);
     try {
       alert(`create post success`);
+      router.push('/');
     } catch (error) {
       alert(`create post fail`);
     }

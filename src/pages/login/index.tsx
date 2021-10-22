@@ -10,7 +10,6 @@ import { useForm } from 'react-hook-form';
 import { apiUrl, LOCAL_STORAGE } from 'src/Context/contant';
 import setAuthToken from 'src/utils/setAuthToken';
 
-import load from '../../animation/loading.module.css';
 import { UserContext } from '../../Context/AuthContext';
 
 type Inputs = {
@@ -31,7 +30,6 @@ export default function index() {
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>();
-  const [loading, setLoading] = React.useState<boolean>(false);
   const login = async (data: any) => {
     const user = await loginService(data).catch(() => {
       alert('Wrong username or password');
@@ -47,61 +45,49 @@ export default function index() {
     localStorage.setItem(LOCAL_STORAGE, user.accessToken);
     setAuthToken(user.accessToken);
   };
-  React.useEffect(() => {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 3000);
-  }, []);
 
   return (
-    <>
-      {loading ? (
-        <div className={load.animated}></div>
-      ) : (
-        <div className="w-6/12 m-auto text-center bg-gray-300 rounded-md shadow-lg my-7">
-          <Helmet>
-            <meta charSet="utf-8" />
-            <title>Login</title>
-          </Helmet>
-          <form
-            className="flex flex-col w-6/12 m-auto text-center "
-            onSubmit={handleSubmit(login)}
-          >
-            <input
-              placeholder="UserName..."
-              className="w-6/12 m-auto my-2 border-2 border-black rounded-lg"
-              {...register('username', { required: true })}
-            />
-            <span className="my-2 font-bold text-pink-900">
-              {errors.username && <span>This field is required</span>}
-            </span>
-            <input
-              placeholder="Password..."
-              type="password"
-              {...register('password', { required: true })}
-              className="w-6/12 m-auto border-2 border-black rounded-lg"
-            />
-            {/* errors will return when field validation fails  */}
-            <span className="my-2 font-bold text-pink-900">
-              {errors.password && <span>This field is required</span>}
-            </span>
-            <button
-              className="w-6/12 m-auto my-5 border-2 border-black rounded-lg cursor-pointer "
-              type="submit"
-            >
-              Login
-            </button>
-            OR
-            <button className="font-bold transition-all transform hover:scale-110 hover:text-blue-500">
-              <Link href="/register" passHref>
-                Register
-              </Link>
-            </button>
-          </form>
-        </div>
-      )}
-    </>
+    <div className="w-6/12 m-auto text-center bg-gray-300 rounded-md shadow-lg my-7">
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Login</title>
+      </Helmet>
+      <form
+        className="flex flex-col w-6/12 m-auto text-center "
+        onSubmit={handleSubmit(login)}
+      >
+        <input
+          placeholder="UserName..."
+          className="w-6/12 m-auto my-2 border-2 border-black rounded-lg"
+          {...register('username', { required: true })}
+        />
+        <span className="my-2 font-bold text-pink-900">
+          {errors.username && <span>This field is required</span>}
+        </span>
+        <input
+          placeholder="Password..."
+          type="password"
+          {...register('password', { required: true })}
+          className="w-6/12 m-auto border-2 border-black rounded-lg"
+        />
+        {/* errors will return when field validation fails  */}
+        <span className="my-2 font-bold text-pink-900">
+          {errors.password && <span>This field is required</span>}
+        </span>
+        <button
+          className="w-6/12 m-auto my-5 border-2 border-black rounded-lg cursor-pointer "
+          type="submit"
+        >
+          Login
+        </button>
+        OR
+        <button className="font-bold transition-all transform hover:scale-110 hover:text-blue-500">
+          <Link href="/register" passHref>
+            Register
+          </Link>
+        </button>
+      </form>
+    </div>
   );
 }
 // export async function getServerSideProps(context: NextPageContext) {
